@@ -5,11 +5,11 @@
 # Created 2006 summer
 #####################################################
 
-sed 's/[0-9]/&\n/g'< $1 > ttt
+sed 's/[0-9]/&\n/g'< "$1" > ttt
 {
 for ((i=0;i<=80;i++))
 do
- read a[$i] 
+ read -r a[$i]
 done
 } < ttt
 
@@ -22,7 +22,7 @@ sudoku () {
 	for ((i=0;i<=80;i++))
 	do
 
-	 if [ ${a[$i]} -ne 0  ]
+	 if [ "${a[$i]}" -ne 0  ]
  	 then 
 	  continue
 	 fi
@@ -30,12 +30,13 @@ sudoku () {
 	 
 	 for ((j=0;j<=80;j++))
 	 do
-	  if (( $j / 9 == $i / 9 || $j % 9 == $i % 9 || $j / 27 == $i / 27 && $j % 9 / 3 == $i % 9 / 3 ))
+	  if (( j / 9 == i / 9 || j % 9 == i % 9 || j / 27 == i / 27 && j % 9 / 3 == i % 9 / 3 ))
 	  then
 	    non_cand=${non_cand}${a[$j]}
 	  fi
 	 done
-	 local cand=`echo "123456789" | tr -d $non_cand`
+	 local cand
+	 cand="$(echo "123456789" | tr -d "$non_cand")"
 #echo "\$i = $i, \$cand = $cand"
 	 for ((k=1;k<=9;k++))
 	 do
@@ -53,6 +54,5 @@ sudoku () {
 	done
 	kill $$
 }
-sudoku
 
-exit 0
+sudoku
