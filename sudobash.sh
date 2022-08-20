@@ -52,7 +52,8 @@ sudoku () {
 	do
 	echo -n ${a[$k]}
 	done
-	kill $$
+	echo
+	exit 0
 }
 
 sudoku
