@@ -1,0 +1,23 @@
+name: "Sanity Checks"
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  sanity-checks:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Unit test
+        run: |
+          set -euxo pipefail
+          expected="647381592123459678589267134214536789356798241798124356431872965865913427972645813"
+          observed="$(./sudobash.sh sample_puzzle.txt)"
+          [ "$expected" = "$observed" ] || exit 1
